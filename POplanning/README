@@ -1,0 +1,94 @@
+
+OBJECTIVE
+
+Your task is to implement one of two algorithms for
+finding solutions to non-deterministic partially observable
+planning problems. The two algorithms are:
+
+1. Forward search from the initial belief state
+
+   This can be implemented as a recursive procedure that
+   generates one node in the plan, consisting of an action
+   and a subplan for every possible observation, with each
+   subplan generated recursively.
+
+2. Backward search from the goal states
+
+   More and more belief states and associated plans are generated,
+   so that each new plan consists of an action and a subplan
+   for every possible observation, and the subplan is one of
+   the existing plans.
+
+The forward search algorithm may be slightly easier to implement,
+and with at least one of the test problems it seems to scale up
+better and produce smaller plans.
+
+Included in the material is a test problem in which there are
+N packages respectively with weights 1,...,N, and the goal
+is to identify the heaviest one, when initially it is not
+known which package has which weight. The test problem
+is parameterized with N, and can is solvable with both
+algorithms very quickly at least until N=4.
+
+The code base also includes a plan validation functionality,
+which tests for a given plan whether all executions will end
+in a goal state. This is to help debugging the code.
+
+Some comments follow on both algorithms.
+
+1. For the Forward Search algorithm, it is critical that
+   the depth-first search does not enter an infinite loop.
+   For this reason it is critical to keep track of the state sets
+   on the current path from the root: if a new state set (belief state)
+   is equalt to or a subset of an existing state set, then
+   a cycle has formed, and it must be cut.
+   Randomly shuffling the actions before each action selection
+   helps avoiding very long sequences of redundant actions.
+
+2. In the Backward Search algorithm the implementation of the
+   Backup function is critical. The order in which the candidate
+   sub-plans for the observations are considered has a strong
+   impact on both the runtimes and the size of the plan.
+   For every observation one should use those sub-plans that
+   cover as many states as possible, and therefore trying those
+   sub-plans first in the search would be useful.
+   Also, trying the actions always in the same order in the Backup
+   function may be bad, as better opportunities for finding new
+   plans for larger state sets may get ignored. Randomly shuffling
+   the list of available actions may be helpful.
+
+   Unlike the cycle check in the Forward Search algorithm,
+   for the backward search algorithm it is not as straightforward
+   to prevent redundant actions emerging in a plan. This is
+   the main source for the larger size of the plans produced
+   by the basic variant of this algorithm in comparison to the
+   forward search algorithm.
+
+TEST PROBLEMS
+
+findheaviest.py
+  This is the example from the lecture slides. This is easy to solve
+  with 3 packages, and depending on your implementation details it
+  can be solved relatively quickly with 4 and 5 packages. The plans,
+  however, are far from optimal.
+
+mastermind.py
+  This is the 1970s code breaking game, in which one tries to
+  guess a 4-color code, based on feedback to the guesses as
+  "N right color in right position" and "M right color but in
+  wrong position".
+  Solving this quickly would require heuristics for action
+  selection. A basic blind implementation will not solve the full
+  version with code of length 4 with 6 possible colors.
+  The forward search algorithm solves 2 colors code length 4
+  and 3 colors code length 3 relatively quickly.
+  The problem size can be controlled by the variables MAXCODE and
+  CODELEN in the beginning of mastermind.py
+
+SUBMISSION
+
+Submit your code, either for the Forward or for the Backward
+algorithm (or anything else! ;-) ). Your implementation
+will tested by calling by calling POsolver with different
+inputs, and then validating the returned plan by analyzing
+all of its executions.
