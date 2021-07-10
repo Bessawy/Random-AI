@@ -1,0 +1,23 @@
+
+#first rule
+def p_sentence_or(t):
+    'sentence : sentence OR sentence'
+    t[0] = OR(t[1], t[3])
+#    pass
+
+
+#second rule
+def p_VP_and(t):
+    'VP : VP AND VP'
+    VPf = t[1]
+    VPf2 = t[3]
+    t[0] = (lambda x: AND(VPf(x), VPf2(x)))
+
+
+#Third
+def p_CN_ADJ_CN(t):
+    'CN : adjID CN'
+    adjIDstr = t[1]
+    CNf = t[2]
+    ATOM(adjIDstr, [x])
+    t[0] = (lambda x: AND(CNf(x),ATOM(adjIDstr, [x])))

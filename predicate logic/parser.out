@@ -1,0 +1,62 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    A
+    AND
+    NO
+    OF
+    OR
+    S
+    SINGLEQUOTE
+    SOME
+    THAT
+    THE
+    ivID
+    roleID
+    tvID
+
+Grammar
+
+Rule 0     S' -> spec
+Rule 1     spec -> sentence0
+Rule 2     spec -> sentence0 spec
+Rule 3     sentence0 -> EQUALS
+Rule 4     sentence0 -> sentence DOT
+Rule 5     NP -> ID
+Rule 6     DET -> EVERY
+Rule 7     VP -> IS NOT adjID
+
+Terminals, with rules where they appear
+
+A                    : 
+AND                  : 
+DOT                  : 4
+EQUALS               : 3
+EVERY                : 6
+ID                   : 5
+IS                   : 7
+NO                   : 
+NOT                  : 7
+OF                   : 
+OR                   : 
+S                    : 
+SINGLEQUOTE          : 
+SOME                 : 
+THAT                 : 
+THE                  : 
+adjID                : 7
+error                : 
+ivID                 : 
+roleID               : 
+tvID                 : 
+
+Nonterminals, with rules where they appear
+
+DET                  : 
+NP                   : 
+VP                   : 
+sentence             : 4
+sentence0            : 1 2
+spec                 : 2 0
+
